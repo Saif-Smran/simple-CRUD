@@ -9,9 +9,8 @@ import {
 } from "@/components/ui/table";
 import { getUsers } from "../../server/user";
 import type { UserSelect } from "@/db/schema";
-import { PencilIcon} from "lucide-react";
-import { Button } from "./ui/button";
 import DeleteUserBtn from "./DeleteUserBtn";
+import UpdateUserBtn from "./UpdateUserBtn";
 
 async function UsersTable() {
   const users: UserSelect[] = await getUsers();
@@ -40,7 +39,7 @@ async function UsersTable() {
               <TableCell>{user.age}</TableCell>
               <TableCell className="">{created}</TableCell>
               <TableCell className="text-center space-x-4">
-                <Button variant="ghost" className="cursor-pointer"><PencilIcon size={16} /></Button>
+                <UpdateUserBtn user={user} />
                 <DeleteUserBtn userId={user.id} />
               </TableCell>
             </TableRow>
