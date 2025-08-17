@@ -28,8 +28,9 @@ export default function DeleteUserBtn({ userId }: { userId: string }) {
       await deleteUser(userId);
       toast.success("User deleted");
       router.refresh();
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to delete user");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to delete user';
+      toast.error(message);
     } finally {
       setLoading(false);
     }

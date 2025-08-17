@@ -25,7 +25,8 @@ import { useRouter } from 'next/navigation';
 const schema = z.object({
   name: z.string().min(2).max(50),
   email: z.string().email(),
-  age: z.coerce.number().min(1).max(120),
+  // Age already converted to number in the input onChange handler.
+  age: z.number().min(1).max(120),
   password: z.string().min(6).max(100),
 });
 type FormValues = z.infer<typeof schema>;
@@ -38,7 +39,7 @@ export default function UpdateUserBtn({ user }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema) as any,
+    resolver: zodResolver(schema),
     defaultValues: {
       name: user.name ?? '',
       email: user.email ?? '',
@@ -54,8 +55,9 @@ export default function UpdateUserBtn({ user }: Props) {
       toast.success('User updated');
       setOpen(false);
       router.refresh();
-    } catch (err: any) {
-      toast.error(err?.message || 'Failed to update user');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to update user';
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -74,7 +76,7 @@ export default function UpdateUserBtn({ user }: Props) {
           <DialogDescription>Modify the user details and save changes.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit as any)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField name="name" control={form.control} render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>

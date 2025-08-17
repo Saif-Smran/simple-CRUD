@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import UserForm from "@/components/forms/UserForm";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 export default function AddUserDialog() {
   const [open, setOpen] = useState(false);
@@ -29,7 +28,7 @@ export default function AddUserDialog() {
             <DialogDescription>
               Fill in the details to create a new user.
             </DialogDescription>
-            <UserForm onSuccess={(u) => { setOpen(false); router.refresh(); }} />
+            <UserForm onSuccess={() => { setOpen(false); router.refresh(); }} />
           </DialogHeader>
         </DialogContent>
       </Dialog>

@@ -46,8 +46,9 @@ export default function UserForm({ onSuccess }: UserFormProps) {
   toast.success(`User ${user.name} created.`);
       form.reset();
   onSuccess?.(user);
-    } catch (error: any) {
-  toast.error(error?.message || 'Failed to create user');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to create user';
+      toast.error(message);
     }
   }
 
