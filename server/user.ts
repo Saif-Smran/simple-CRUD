@@ -66,3 +66,15 @@ export async function getUserByEmail(email: string): Promise<UserSelect | null> 
         throw new Error("Failed to fetch user by email");
     }
 }
+
+// Delete a user
+export async function deleteUser(id: string): Promise<void> {
+    try {
+        await db.delete(users).where(eq(users.id, id));
+        // Revalidate home page data (UsersTable)
+        revalidatePath('/');
+    } catch (err) {
+        console.error("deleteUser error", err);
+        throw new Error("Failed to delete user");
+    }
+}
